@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
 
     RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-    RUN chown -R www-data:www-data /var/www/html/laravelMS/accountService \
+    RUN chown -R www-data:www-data /var/www/html/laravelMS/ezKartMailService \
         && a2enmod rewrite && a2enmod proxy && a2enmod proxy_http
 
     # Clear cache
