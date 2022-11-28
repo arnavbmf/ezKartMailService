@@ -9,7 +9,7 @@ services:
     ports:
       - 8889:80
     volumes:
-      - .:/var/www/html/laravelMS/laravel_mail_service
+      - .:/var/www/html/laravelMS/ezKartMailService
     networks:
     - internal-network
 
