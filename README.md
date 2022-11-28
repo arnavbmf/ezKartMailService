@@ -1,0 +1,2 @@
+# ezKartMailService
+Firing Mails
