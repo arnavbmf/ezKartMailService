@@ -27,8 +27,7 @@ class SendEmail
      * @return void
      */
     public function handle(ConsumeRabbitMqMessage $event)
-    {
-        // dd($event->details);
+    { 
         $messageBody = $event->details;
         $t=time();
         $time = date("Y-m-d h:i:s a",$t);
@@ -41,22 +40,26 @@ class SendEmail
         $sendgrid=new \SendGrid(env("MAIL_PASSWORD"));
         try {
             $response=$sendgrid->send($email);
-            print $response->statusCode() . "\n";
-            print_r($response->headers());
-            print_r('mail Send');
+            if($response->statusCode() == 202) {
+                $mailLog = new MailLogs();
+                $mailLog->user_id = $messageBody->user;
+                $mailLog->to_emailId = $messageBody->email;
+                $mailLog->from_emailId = env("MAIL_FROM_ADDRESS");
+                $mailLog->subject = "qekdqf";
+                $mailLog->mail_body = "";
+                $mailLog->created_at = $time;
+                $mailLog->updated_at = $time;
+                $mailLog->save();
+                print $response->statusCode() . "\n";
+                print_r('Mail Sent Successfully');
+            }  
+            else {
+                print_r('Mail Sending Failed');
+            }          
+            
         } catch (Exception $e) {
             echo 'Caught exception';
             $e->getMessage() . "\n";
         }
-        // dd(MailLogs::get()->toArray());
-        $mailLog = new MailLogs();
-        $mailLog->user_id = $messageBody->user;
-        $mailLog->to_emailId = $messageBody->email;
-        $mailLog->from_emailId = "efwef";
-        $mailLog->subject = "qekdqf";
-        $mailLog->mail_body = "qkhfk";
-        $mailLog->created_at = $time;
-        $mailLog->updated_at = $time;
-        $mailLog->save();
     }
 }

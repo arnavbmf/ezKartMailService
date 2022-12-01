@@ -38,7 +38,6 @@ class ConsumeCommand extends Command
             
             var_dump($messageBody);
             event (new ConsumeRabbitMqMessage($messageBody));
-            // $logger->info('Consumer exited.');
 
             $resolver->acknowledge($message);
         });
