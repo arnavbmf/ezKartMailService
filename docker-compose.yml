@@ -8,13 +8,15 @@ services:
     image: 'laravelapp'
     ports:
       - 8889:80
+    links:
+      - mailDb
     volumes:
       - .:/var/www/html/laravelMS/ezKartMailService
     networks:
-    - internal-network
+      - ezkartaccservice_internal-network
 
-  maildb:
-    container_name: maildb
+  mailDb:
+    container_name: mailDb
     image: mysql:5.7
     restart: always
     ports:
@@ -25,9 +27,9 @@ services:
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
-      - mailvolume:/var/lib/mysql
+      - mailVolume:/var/lib/mysql
     networks:
-    - internal-network
+      - ezkartaccservice_internal-network
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -35,16 +37,16 @@ services:
         - '8090:80'
     restart: always
     environment:
-        PMA_HOST: maildb
+        PMA_HOST: mailDb
     depends_on:
-        - maildb
+        - mailDb
     networks:
-    - internal-network
+      - ezkartaccservice_internal-network
 
 volumes:
-  mailvolume:
+  mailVolume:
     driver: local
 
 networks:
-  internal-network:
-    driver: bridge
+  ezkartaccservice_internal-network:
+    external: true
